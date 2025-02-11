@@ -15,5 +15,5 @@ public interface SearchRepository extends MongoRepository<SearchEntity, String> 
     List<SearchEntity> findByStart_dateIsAfter(String start_date);
 
     @Query(value="{'hosts.site_id' : ?0}")
-    List<SearchEntity> findByHostsSiteId(String hostsSiteId);
+    List<SearchEntity> findByHostsSiteId(int hostsSiteId);
 }

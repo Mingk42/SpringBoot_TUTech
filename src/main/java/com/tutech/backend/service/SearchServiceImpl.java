@@ -58,7 +58,7 @@ public class SearchServiceImpl implements SearchService {
         return searchRepository.findByStart_dateIsAfter(start_date);
     }
 
-    public List<SearchEntity> findByHostsSiteId(String hostsSiteId){
+    public List<SearchEntity> findByHostsSiteId(int hostsSiteId){
         return searchRepository.findByHostsSiteId(hostsSiteId);
     }
 }
