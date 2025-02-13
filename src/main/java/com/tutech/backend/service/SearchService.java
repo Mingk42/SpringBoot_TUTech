@@ -11,5 +11,6 @@ public interface SearchService {
     void deleteSearchEntityById(String id);
     List<SearchEntity> getAllSearchEntitiesByRegion(String region);
     List<SearchEntity> findByStart_dateIsAfter(String start_date);
-    List<SearchEntity> findByHostsSiteId(String hostsSiteId);
+    List<SearchEntity> findByHostsSiteId(int hostsSiteId);
+    List<SearchEntity> findByStart_dateAndCategory(String start_date, String category);
 }

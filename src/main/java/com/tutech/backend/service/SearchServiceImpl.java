@@ -58,7 +58,12 @@ public class SearchServiceImpl implements SearchService {
         return searchRepository.findByStart_dateIsAfter(start_date);
     }
 
-    public List<SearchEntity> findByHostsSiteId(String hostsSiteId){
+    public List<SearchEntity> findByHostsSiteId(int hostsSiteId){
         return searchRepository.findByHostsSiteId(hostsSiteId);
+    }
+
+    public List<SearchEntity> findByStart_dateAndCategory(String start_date, String category){
+        System.out.println(start_date+" ::: "+category);
+        return searchRepository.findByStart_dateAndCategory(start_date, category);
     }
 }
