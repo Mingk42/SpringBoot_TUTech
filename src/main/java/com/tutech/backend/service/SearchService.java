@@ -12,4 +12,5 @@ public interface SearchService {
     List<SearchEntity> getAllSearchEntitiesByRegion(String region);
     List<SearchEntity> findByStart_dateIsAfter(String start_date);
     List<SearchEntity> findByHostsSiteId(int hostsSiteId);
+    List<SearchEntity> findByStart_dateAndCategory(String start_date, String category);
 }

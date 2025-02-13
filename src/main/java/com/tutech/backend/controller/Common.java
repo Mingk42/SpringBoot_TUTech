@@ -13,6 +13,7 @@ import com.tutech.backend.dto.SearchEntity;
 import com.tutech.backend.service.SearchServiceImpl;
 
 import static com.tutech.backend.utils.Common.*;
+import static java.lang.Math.min;
 
 @RestController
 @RequestMapping("/")
@@ -44,15 +45,54 @@ public class Common {
 
     @GetMapping("/thisWeekend")
     public List<SearchEntity> ThisWeekend(){
-        List<SearchEntity> result = new ArrayList<>();
-        List<SearchEntity> banner = searchServiceImpl.findByStart_dateIsAfter(getToday());
-        banner.sort(Comparator.comparing(SearchEntity::getStart_date));
+        List<SearchEntity> rstList = new ArrayList<>();
 
-        for(int i = 0; i < 11; i++){
-            result.add(banner.get(i));
+        List weekendList = getThisWeekendDate();
+        String[] categoryList = {"콘서트", "연극", "뮤지컬", "뮤지컬/연극", "전시/행사"};
+
+        List musicalAndPlay= new ArrayList();
+
+        for(String category : categoryList){
+            if (category=="콘서트") {
+                List tmp= new ArrayList();
+
+                for(Object weekend:weekendList){
+                    List<SearchEntity> rst = searchServiceImpl.findByStart_dateAndCategory((String)weekend, category);
+                    tmp.addAll(rst);
+
+                    if (tmp.size()>4){
+                        break;
+                    }
+                }
+                rstList.addAll(tmp.subList(0,4));
+            } else if(category=="전시/행사") {
+                List tmp= new ArrayList();
+                for(Object weekend:weekendList){
+                    List<SearchEntity> rst = searchServiceImpl.findByStart_dateAndCategory((String)weekend, category);
+                    tmp.addAll(rst);
+
+                    if (tmp.size()>4){
+                        break;
+                    }
+                }
+                if(tmp.size()>0){
+                    rstList.addAll(tmp.subList(0,min(tmp.size(),4)));
+                }
+            } else {
+                for(Object weekend:weekendList){
+                    List<SearchEntity> rst = searchServiceImpl.findByStart_dateAndCategory((String)weekend, category);
+                    musicalAndPlay.addAll(rst);
+
+                    if (musicalAndPlay.size()>4){   // 뮤지컬에서 이미 4개가 넘더라도 공연, 뮤지컬/공연에 대해서도 add하고 숫자를 체크할 수 있음
+                        break;
+                    }
+                }
+            }
         }
+        musicalAndPlay.sort(Comparator.comparing(SearchEntity::getStart_date));
+        rstList.addAll(musicalAndPlay.subList(0,4));
 
-        return result;
+        return rstList;
     }
 
     @GetMapping("/weeklyBest")
